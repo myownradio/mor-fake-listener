@@ -20,6 +20,8 @@ public class ChannelsList {
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
     }
 
+    private static JSONResponse randomChannel;
+
     public static JSONResponse getList() {
         try {
             HttpsURLConnection connection = FakeSSL.openConnection(Props.getPropertyOrFail("rest.url").concat("v2/channels/popular"));
@@ -32,5 +34,14 @@ public class ChannelsList {
     }
 
 
-
+    public static JSONResponse getRandomChannel() {
+        try {
+            HttpsURLConnection connection = FakeSSL.openConnection(Props.getPropertyOrFail("rest.url").concat("v2/channels/random"));
+            JSONResponse jsonResponse = objectMapper.readValue(connection.getInputStream(), JSONResponse.class);
+            connection.disconnect();
+            return jsonResponse;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

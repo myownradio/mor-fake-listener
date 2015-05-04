@@ -15,11 +15,8 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(Props.getPropertyAsIntegerOrFail("listeners.max"));
         while (true) {
-            JSONResponse response = ChannelsList.getList();
-            ChannelEntry entry = response.getData()
-                    .getChannels()
-                    .getItems()
-                    .get((int) (Math.random() * response.getData().getChannels().getItems().size()));
+            JSONResponse response = ChannelsList.getRandomChannel();
+            ChannelEntry entry = response.getData();
             Thread.sleep(1000);
             long duration = (long) (Math.random() * 7_200_000L);
             int channelId = entry.getSid();

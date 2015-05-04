@@ -7,7 +7,7 @@ public class JSONResponse {
 
     private int code;
     private String message;
-    private ChannelsWrap data;
+    private ChannelEntry data;
 
     public int getCode() {
         return code;
@@ -25,11 +25,11 @@ public class JSONResponse {
         this.message = message;
     }
 
-    public ChannelsWrap getData() {
+    public ChannelEntry getData() {
         return data;
     }
 
-    public void setData(ChannelsWrap data) {
+    public void setData(ChannelEntry data) {
         this.data = data;
     }
 
