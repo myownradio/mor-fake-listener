@@ -14,6 +14,8 @@ import java.util.concurrent.Executors;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(Props.getPropertyAsIntegerOrFail("listeners.max"));
+//        BlockingQueue<Runnable> q = new ArrayBlockingQueue<>(20);
+//        ThreadPoolExecutor ex = new ThreadPoolExecutor(4, 10, 20, TimeUnit.SECONDS, q);
         while (true) {
             JSONResponse response = ChannelsList.getRandomChannel();
             ChannelEntry entry = response.getData();
