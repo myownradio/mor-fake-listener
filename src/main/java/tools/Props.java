@@ -9,12 +9,15 @@ import java.util.Properties;
  */
 public class Props {
     final private static Properties properties;
+
     static {
         properties = new Properties();
         try {
             properties.load(Props.class.getResourceAsStream("/my.properties"));
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
     }
+
     public static String getPropertyOrFail(String key) {
         if (properties.containsKey(key)) {
             return properties.getProperty(key);
@@ -22,6 +25,11 @@ public class Props {
             throw new RuntimeException(String.format("Property \"%s\" not found in properties file!", key));
         }
     }
+
+    public static int getPropertyAsIntegerOrFail(String key) {
+        return Integer.parseInt(getPropertyOrFail(key));
+    }
+
     public static Optional<String> getProperty(String key) {
         return Optional.ofNullable(properties.getProperty(key));
     }
