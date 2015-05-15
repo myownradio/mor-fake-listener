@@ -6,17 +6,21 @@ import service.listener.ClientSession;
 import tools.Props;
 import tools.ThreadTool;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Roman on 04.05.2015.
  */
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        ExecutorService executorService = Executors.newFixedThreadPool(Props.getPropertyAsIntegerOrFail("listeners.max"));
-//        BlockingQueue<Runnable> q = new ArrayBlockingQueue<>(20);
-//        ThreadPoolExecutor ex = new ThreadPoolExecutor(4, 10, 20, TimeUnit.SECONDS, q);
+
+        int max = Props.getPropertyAsIntegerOrFail("listeners.max");
+
+        final ThreadPoolExecutor executorService = new ThreadPoolExecutor(max, max, 0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(200));
+
         while (!Thread.currentThread().isInterrupted()) {
             Thread thread = new Thread(() -> {
                 JSONResponse response = ChannelsList.getRandomChannel();
@@ -30,7 +34,7 @@ public class Main {
                 ClientSession session = new ClientSession(client);
                 System.out.println(entry.getName() + " will be listened for " + (duration / 1000) + " seconds");
                 executorService.submit(session);
-                ThreadTool.sleep((long) (Math.random() * 30_000L));
+                ThreadTool.sleep((long) (Math.random() * 5_000L));
             });
             thread.start();
             thread.join();

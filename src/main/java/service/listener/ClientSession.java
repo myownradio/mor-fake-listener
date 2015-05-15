@@ -1,11 +1,9 @@
 package service.listener;
 
-import tools.FakeSSL;
-import tools.Props;
+import service.entities.FlowListener;
+import tools.ThreadTool;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.IOException;
-import java.io.InputStream;
+import java.sql.SQLException;
 
 /**
  * Created by Roman on 04.05.2015.
@@ -19,16 +17,13 @@ public class ClientSession implements Runnable {
     }
 
     public void run() {
-        String channel = String.format(Props.getPropertyOrFail("channel.url"), client.getChannelId());
-        long start = System.currentTimeMillis();
-        HttpsURLConnection connection = FakeSSL.openConnection(channel);
-        try (InputStream is = connection.getInputStream()) {
-            byte[] buffer = new byte[1024];
-            long finish = start + client.getListeningTime();
-            while (is.read(buffer) != -1 && (System.currentTimeMillis() < finish));
-        } catch (IOException e) {
+
+        try (FlowListener listener = new FlowListener("127.0.0.1", "FL/1.0", "mp3_128k",
+                client.getChannelId())) {
+            ThreadTool.sleep(client.getListeningTime());
+        } catch (SQLException e) {
             /* NOP */
         }
-        connection.disconnect();
+
     }
 }

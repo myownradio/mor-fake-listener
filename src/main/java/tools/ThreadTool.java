@@ -10,4 +10,9 @@ public class ThreadTool {
         } catch (InterruptedException e) {
         }
     }
+    public static void execute(Runnable r) {
+        while(!Thread.currentThread().isInterrupted()) {
+            r.run();
+        }
+    }
 }
