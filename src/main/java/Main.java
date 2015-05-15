@@ -25,14 +25,12 @@ public class Main {
             Thread thread = new Thread(() -> {
                 JSONResponse response = ChannelsList.getRandomChannel();
                 ChannelEntry entry = response.getData();
-                long duration = (long) (Math.random() * 7_200_000L);
-                int channelId = entry.getSid();
                 Client client = new Client() {{
-                    this.setChannelId(channelId);
-                    this.setListeningTime(duration);
+                    this.setChannelId(entry.getSid());
+                    this.setListeningTime((long) (Math.random() * 7_200_000L));
                 }};
                 ClientSession session = new ClientSession(client);
-                System.out.println(entry.getName() + " will be listened for " + (duration / 1000) + " seconds");
+                System.out.println(entry.getName() + " will be listened for " + (client.getListeningTime() / 1000) + " seconds");
                 executorService.submit(session);
                 ThreadTool.sleep((long) (Math.random() * 5_000L));
             });
