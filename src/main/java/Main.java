@@ -7,6 +7,7 @@ import tools.Props;
 import tools.ThreadTool;
 
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +20,16 @@ public class Main {
         int max = Props.getPropertyAsIntegerOrFail("listeners.max");
 
         final ThreadPoolExecutor executorService = new ThreadPoolExecutor(max, max, 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(200));
+                new LinkedBlockingQueue<>(8));
+
+        executorService.setRejectedExecutionHandler((r, executor) -> {
+            try {
+                System.out.println("Waiting for free slots...");
+                executor.getQueue().put(r);
+            } catch (InterruptedException e) {
+                /* NOP */
+            }
+        });
 
         while (!Thread.currentThread().isInterrupted()) {
             Thread thread = new Thread(() -> {
@@ -32,7 +42,7 @@ public class Main {
                 ClientSession session = new ClientSession(client);
                 System.out.println(entry.getName() + " will be listened for " + (client.getListeningTime() / 1000) + " seconds");
                 executorService.submit(session);
-                ThreadTool.sleep((long) (Math.random() * 5_000L));
+                ThreadTool.sleep((long) (Math.random() * 25_000L));
             });
             thread.start();
             thread.join();
