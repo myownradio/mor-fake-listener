@@ -1,8 +1,11 @@
 package service.entities;
 
+import org.jooq.SQLDialect;
 import service.ds.DataSource;
 
 import java.sql.*;
+import static org.jooq.impl.DSL.*;
+import static org.jooq.impl.DSL.field;
 
 /**
  * Created by Roman on 11.12.14.
@@ -28,9 +31,8 @@ public class FlowListener implements AutoCloseable {
         PreparedStatement ps;
         ResultSet rs;
         try (Connection connection = DataSource.getConnection()) {
-            ps = connection.prepareStatement(
-                    "INSERT INTO r_listener (client_ip, client_ua, stream, quality, started, finished) VALUES (?, ?, ?, ?, NOW(), NULL)",
-                    Statement.RETURN_GENERATED_KEYS);
+
+            ps = connection.prepareStatement("INSERT INTO r_listener (client_ip, client_ua, stream, quality, started, finished) VALUES (?, ?, ?, ?, NOW(), NULL", Statement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, this.client_ip);
             ps.setString(2, this.client_ua);
