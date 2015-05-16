@@ -1,4 +1,5 @@
 import service.ChannelsList;
+import service.JobController;
 import service.entities.ChannelEntry;
 import service.entities.JSONResponse;
 import service.listener.Client;
@@ -30,6 +31,9 @@ public class Main {
                 /* NOP */
             }
         });
+
+        JobController controller = new JobController(executorService);
+        controller.init();
 
         while (!Thread.currentThread().isInterrupted()) {
             Thread thread = new Thread(() -> {
