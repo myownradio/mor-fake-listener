@@ -1,11 +1,9 @@
 package service.entities;
 
-import org.jooq.SQLDialect;
 import service.ds.DataSource;
 
 import java.sql.*;
-import static org.jooq.impl.DSL.*;
-import static org.jooq.impl.DSL.field;
+
 
 /**
  * Created by Roman on 11.12.14.

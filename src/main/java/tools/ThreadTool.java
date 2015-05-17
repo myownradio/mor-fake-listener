@@ -15,4 +15,11 @@ public class ThreadTool {
             r.run();
         }
     }
+    public static void throwsException(Runnable r) {
+        try {
+            r.run();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

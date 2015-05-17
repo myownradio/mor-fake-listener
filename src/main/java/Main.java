@@ -24,13 +24,26 @@ public class Main {
                 new LinkedBlockingQueue<>(8));
 
         executorService.setRejectedExecutionHandler((r, executor) -> {
+            ThreadTool.throwsException(() -> {
+
+            });
             try {
                 System.out.println("Waiting for free slots...");
                 executor.getQueue().put(r);
             } catch (InterruptedException e) {
-                /* NOP */
+                throw new RuntimeException(e);
             }
         });
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Shutting down...");
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(30L, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }));
 
         JobController controller = new JobController(executorService);
         controller.init();
