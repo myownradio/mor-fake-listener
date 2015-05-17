@@ -24,9 +24,6 @@ public class Main {
                 new LinkedBlockingQueue<>(8));
 
         executorService.setRejectedExecutionHandler((r, executor) -> {
-            ThreadTool.throwsException(() -> {
-
-            });
             try {
                 System.out.println("Waiting for free slots...");
                 executor.getQueue().put(r);
@@ -37,7 +34,7 @@ public class Main {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("Shutting down...");
-            executorService.shutdown();
+            executorService.shutdownNow();
             try {
                 executorService.awaitTermination(30L, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
