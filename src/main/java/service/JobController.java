@@ -26,7 +26,7 @@ public class JobController {
     }
 
     public void init() {
-        scheduler.scheduleAtFixedRate(this::resetDaily, 0L, 1L, TimeUnit.DAYS);
+        scheduler.scheduleAtFixedRate(this::resetDaily, 0L, 6L, TimeUnit.HOURS);
         scheduler.scheduleAtFixedRate(this::resetHourly, 0L, 1L, TimeUnit.HOURS);
     }
 

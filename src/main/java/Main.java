@@ -8,7 +8,6 @@ import tools.Props;
 import tools.ThreadTool;
 
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -16,6 +15,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Roman on 04.05.2015.
  */
 public class Main {
+
     public static void main(String[] args) throws InterruptedException {
 
         int max = Props.getPropertyAsIntegerOrFail("listeners.max");
