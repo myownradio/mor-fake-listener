@@ -13,6 +13,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class JobController {
 
+    final private static double STARTUP = 1431934544000D;
+    final private static double ATTACK = 172_800_000D;
+    final private static double MAX = 50D;
     final private static double [] daily = {
             4D,  2D,  0D,  0D,  1D,  2D,  2D,  4D,  6D,  6D,  6D,  7D,
             9D,  9D,  9D, 11D, 14D, 18D, 18D, 18D, 16D, 16D, 11D,  8D
@@ -31,8 +34,10 @@ public class JobController {
     }
 
     public void resetDaily() {
-        ratio = 2D * new Random().nextDouble();
-        System.out.println("New ratio - " + ratio);
+        double factor = getCurrentFactor();
+        System.out.println("Current factor: " + factor);
+        ratio = factor + (factor / 4) * new Random().nextDouble();
+        System.out.println("New ratio: " + ratio);
     }
 
     public void resetHourly() {
@@ -41,7 +46,12 @@ public class JobController {
         int newPoolSize = (int) (currentVolume * ratio);
         executor.setCorePoolSize(newPoolSize);
         executor.setMaximumPoolSize(newPoolSize);
-        System.out.println("New pool size - " + newPoolSize);
+        System.out.println("New pool size: " + newPoolSize);
+    }
+
+    private double getCurrentFactor() {
+        long time = System.currentTimeMillis();
+        return Math.min(MAX, MAX / ATTACK * (time - STARTUP));
     }
 
 }
