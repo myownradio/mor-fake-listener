@@ -36,7 +36,7 @@ public class JobController {
     public void resetDaily() {
         double factor = getCurrentFactor();
         System.out.println("Current factor: " + factor);
-        ratio = factor + (factor / 4) * new Random().nextDouble();
+        ratio = factor + new Random().nextDouble() * 2;
         System.out.println("New ratio: " + ratio);
     }
 
