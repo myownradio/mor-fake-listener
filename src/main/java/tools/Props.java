@@ -21,9 +21,13 @@ public class Props {
     public static String getPropertyOrFail(String key) {
         if (properties.containsKey(key)) {
             return properties.getProperty(key);
-        } else {
-            throw new RuntimeException(String.format("Property \"%s\" not found in properties file!", key));
         }
+
+        if (System.getProperty(key) != null) {
+            return System.getProperty(key);
+        }
+
+        throw new RuntimeException(String.format("Property \"%s\" not found in properties file!", key));
     }
 
     public static int getPropertyAsIntegerOrFail(String key) {

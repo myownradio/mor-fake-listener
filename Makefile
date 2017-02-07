@@ -6,3 +6,6 @@ build:
 
 run:
 	docker run --rm -it --name $(CONTAINER_ID) $(IMAGE_ID)
+
+push:
+	docker push $(IMAGE_ID)
