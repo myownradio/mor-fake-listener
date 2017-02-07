@@ -1,6 +1,7 @@
 package service.ds;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import tools.Props;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,10 +13,10 @@ public class DataSource {
     final private static BasicDataSource dataSource;
     static {
         BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUsername("admin");
-        ds.setPassword("Razwi=D");
-        ds.setUrl("jdbc:mysql://myownradio.biz/myownradio");
+        ds.setDriverClassName(Props.getPropertyOrFail("database.driverClass"));
+        ds.setUsername(Props.getPropertyOrFail("database.user"));
+        ds.setPassword(Props.getPropertyOrFail("database.pass"));
+        ds.setUrl(Props.getPropertyOrFail("database.url"));
         ds.setMinIdle(5);
         ds.setMaxIdle(20);
         ds.setMaxOpenPreparedStatements(180);
