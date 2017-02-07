@@ -1,9 +1,8 @@
 FROM maven:3.3.9-jdk-8
 
-COPY pom.xml /app/
-COPY src/** /app/src/
+COPY . app
 
-WORKDIR /app
+WORKDIR app
 
 RUN mvn install
 
