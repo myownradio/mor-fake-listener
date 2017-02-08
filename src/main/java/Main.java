@@ -43,7 +43,6 @@ public class Main {
         }));
 
         JobController controller = new JobController(executorService);
-        controller.init();
 
         while (!Thread.currentThread().isInterrupted()) {
             Thread thread = new Thread(() -> {
@@ -56,7 +55,7 @@ public class Main {
                 ClientSession session = new ClientSession(client);
                 System.out.println(entry.getName() + " will be listened for " + (client.getListeningTime() / 1000) + " seconds");
                 executorService.submit(session);
-                ThreadTool.sleep((long) (Math.random() * 3_000_000L));
+                ThreadTool.sleep((long) (Math.random() * 60_000L));
             });
             thread.start();
             thread.join();

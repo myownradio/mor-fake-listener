@@ -19,12 +19,12 @@ public class Props {
     }
 
     public static String getPropertyOrFail(String key) {
-        if (properties.containsKey(key)) {
-            return properties.getProperty(key);
+        if (System.getenv(key) != null) {
+            return System.getProperty(key);
         }
 
-        if (System.getProperty(key) != null) {
-            return System.getProperty(key);
+        if (properties.containsKey(key)) {
+            return properties.getProperty(key);
         }
 
         throw new RuntimeException(String.format("Property \"%s\" not found in properties file!", key));
